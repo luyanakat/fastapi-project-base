@@ -1,12 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi_sqlalchemy import db
-from app.models.posts import Posts
-from app.services.post_service import PostService
+from fastapi import APIRouter, Depends
+from fastapi import Depends
 
-router = APIRouter()
+test_router = APIRouter()
 
-# test api
-@router.get("", tags=["test"])
-async def test():
-    row = PostService.get_post(1)
-    return {"message": "Hello, FastAPI!", "row": row}
+@test_router.get("", tags=["test"])
+def test():
+    return {"data": "OK!"}
