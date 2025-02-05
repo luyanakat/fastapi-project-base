@@ -15,7 +15,6 @@ class PostService(object):
     def get_post(self, post_id: int):
         res = self.redis_client.get_json(post_id)
         if res:
-            print("From Redis")
             return res
 
         post = self.post_repo.get_post_by_id(post_id)

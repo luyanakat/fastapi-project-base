@@ -16,4 +16,3 @@ class PostRepository:
         self.session.add(post)
         self.session.commit()
         return post
-

@@ -15,11 +15,17 @@ class RedisClient:
         data = self.client.get(key)
         return json.loads(data) if data else None
 
+
     def set_with_ttl(self, key, value, ttl=None):
         self.client.set(key, value, ex=ttl)
 
+
     def delete(self, key):
         self.client.delete(key)
+
+    
+    def get_key(self, key):
+        return self.client.get(key)
 
 redis_client = RedisClient()
 
