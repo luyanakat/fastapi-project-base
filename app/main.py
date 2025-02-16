@@ -4,9 +4,9 @@ from app.api.route.route import router
 from app.core.config import settings
 
 def init_app() -> FastAPI:
-    app = FastAPI()
-    app.include_router(router, prefix="/api")
-    return app
+    api_app = FastAPI()
+    api_app.include_router(router, prefix="/api")
+    return api_app
 
 
 app = init_app()

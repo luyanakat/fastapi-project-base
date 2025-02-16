@@ -8,8 +8,8 @@ from fastapi_sqlalchemy import db
 
 
 class PostService(object):
-    def __init__(self, db: Session = Depends(get_db)):
-        self.post_repo = PostRepository(db)
+    def __init__(self, db_session: Session = Depends(get_db)):
+        self.post_repo = PostRepository(db_session)
         self.redis_client = get_redis()
 
     def get_post(self, post_id: int):
