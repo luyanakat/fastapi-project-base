@@ -10,7 +10,14 @@ class BaseModel:
     __name__: str
 
     def __to_dict__(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        result = {}
+        for c in self.__table__.columns:
+            value = getattr(self, c.name)
+            if isinstance(value, datetime):
+                result[c.name] = value.isoformat()
+            else:
+                result[c.name] = value
+        return result
     
     def __to_json_byte__(self):
         return json.dumps(self.__to_dict__(), default=str).encode('utf-8')
@@ -25,5 +32,5 @@ class BareBaseModel(BaseModel):
     __abstract__ = True
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    created_at = Column(DateTime, default=datetime.now)
-    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+    created_at = Column(DateTime, default=datetime.now, index=True)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now, index=True)

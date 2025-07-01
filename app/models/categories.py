@@ -4,5 +4,5 @@ from app.models.base import BareBaseModel
 class Category(BareBaseModel):
     __tablename__ = 'categories'
 
-    title = Column(String, nullable=False)
+    name = Column(String, nullable=False, index=True)
     description = Column(String, nullable=False)

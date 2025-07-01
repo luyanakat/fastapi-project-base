@@ -8,7 +8,8 @@ class RedisClient:
             host=settings.REDIS_HOST,
             port=settings.REDIS_PORT,
             password=settings.REDIS_PASSWORD,
-            decode_responses=True
+            decode_responses=True,
+            db=0,
         )
 
     def get_json(self, key):

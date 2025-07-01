@@ -5,20 +5,41 @@ from sqlalchemy.engine import URL
 import urllib.parse
 
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+import os
+from pydantic_settings import BaseSettings
+from sqlalchemy.engine import URL
 
-def parse_conn_string() -> str:
-    encoded = urllib.parse.quote_plus(os.getenv('DATABASE_URL'))
-    return encoded
+
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = parse_conn_string()
-    REDIS_HOST: str = os.getenv('REDIS_HOST', 'localhost')
-    REDIS_PORT: int = int(os.getenv('REDIS_PORT', 6379))
-    REDIS_PASSWORD: str = os.getenv('REDIS_PASSWORD', '')
-    HOST: str = os.getenv('HOST', 'localhost')
-    PORT: int = int(os.getenv('PORT', 8002))
-  
-settings = Settings() 
+    POSTGRES_USER: str = 'postgres'
+    POSTGRES_PASSWORD: str = 'postgres'
+    POSTGRES_DB: str = 'postgres'
+    POSTGRES_HOST: str = 'localhost'
+    POSTGRES_PORT: int = 5432
+
+    REDIS_HOST: str = 'localhost'
+    REDIS_PORT: int = 6379
+    REDIS_PASSWORD: str = ''
+
+    HOST: str = 'localhost'
+    PORT: int = 8002
+
+    class Config:
+        env_file = os.path.join(BASE_DIR, '.env')
+        env_file_encoding = 'utf-8'
+
+
+settings = Settings()
+
+def build_db_url() -> URL:
+    return URL.create(
+        drivername='postgresql+psycopg2',
+        username=settings.POSTGRES_USER,
+        password=settings.POSTGRES_PASSWORD,
+        host=settings.POSTGRES_HOST,
+        port=settings.POSTGRES_PORT,
+        database=settings.POSTGRES_DB,
+    )
